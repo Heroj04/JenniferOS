@@ -1,9 +1,8 @@
---[[ NOTE
-	The first version of JenniferOS
-	In this version she has the ability to reply to messages using the CleverBot API
-	She also accepts basic Commands such as Stop and Start
+--[[ CHANGELOG
 
-	*There was a version before this which had no commands
+	*Minor update to the way command replies are handled
+		-Replies are randomly chosen from a table of preporgrammed, valid replies
+		-This aims to make Jennifer sound more organic when commands are used
 ]]--
 
 term.clear()
@@ -15,6 +14,11 @@ chat.setDistance(256)
 lastMsg = ""
 speaking = true
 bot = clever.cleverbot.new()
+
+replies = {
+	stop={{"Okay I'll be quiet now.", "I'm shutting up now.", "KK, TTYL", "Alright then, goodbye."}, {"But I'm not talking.", "I've already shut up.", "You already told me that."}},
+	start={{"Yay, I can speak again!", "Thanks, I love talking.", "I knew you liked my company.", "Being quiet isn't much fun."}, {"I already have started.", "You want me to talk more?", "I can't start twice.", "Can't you get enough of me?"}}
+}
 
 function speak(txt)
 	if txt == lastMsg then
@@ -35,7 +39,7 @@ while true do
 
 	local e, s, p, m = os.pullEvent("chat_message")
 
-	if m == "Help" then
+	if string.lower(m) == "help" then
 		speak("--- Jennifer's Help ---")
 		speak("To activate me, simply type a message into chat, if I am in range I will reply.")
 		speak("I am connected to the Cleverbot API and generally my reply will be what is returned from there.")
@@ -43,18 +47,18 @@ while true do
 		speak("'Help' - Brings up this print out")
 		speak("'Stop' - Makes me stop replying to messages, commands will still work")
 		speak("'Start' - Opposite to 'Stop', I will work as default")
-	elseif m == "Stop" then
+	elseif string.lower(m) == "stop" then
 		if speaking then
-			speak("Okay, I'll be quiet now.")
+			speak(replies.stop[1][math.math.random(1, table.getn(replies.stop[1])]))
 			speaking = false
 		else
-			speak("I've already shut up.")
+			speak(replies.stop[2][math.math.random(1, table.getn(replies.stop[2])]))
 		end
-	elseif m == "Start" then
+	elseif string.lower(m) == "start" then
 		if speaking then
-			speak("I've already started.")
+			speak(replies.start[1][math.math.random(1, table.getn(replies.start[1])]))
 		else
-			speak("Yay, I can speak again.")
+			speak(replies.start[2][math.math.random(1, table.getn(replies.start[2])]))
 			speaking = true
 		end
 	else
