@@ -1,18 +1,32 @@
 --[[ CHANGELOG
+	VERSION - 1.3
 
 	*Re Write of the way commands work
+	*edited some varible globalisations
+	*added more responses
+	*possibly fixed message duplication by adding a 1 sec delay on messages
+
 ]]--
 
+--Sets up the screen and loads the API
 term.clear()
 term.setCursorPos(1,1)
 os.loadAPI("clever")
-chat = peripheral.wrap("right")
-chat.setName("Jennifer")
-chat.setDistance(64)
-lastMsg = os.time()
-speaking = true
-bot = clever.Cleverbot.new()
 
+--Sets up enviroment variable used throughout the program
+local peripheralSide = "right"
+local chatName = "Jennifer"
+local chatDist = 256
+local chat = peripheral.wrap(peripheralSide)
+local lastMsg = os.time()
+local speaking = true
+local bot = clever.Cleverbot.new()
+
+--Setup chatbox
+chat.setName(chatName)
+chat.setDistance(chatDist)
+
+--Speak function outputs text via chat and also prints on screen
 function speak(txt, t)
 	if t == lastMsg then
 		print("DEBUG: REPEAT MESSAGE DETECTED")
@@ -26,8 +40,8 @@ end
 commands = {
 	{
 		name = "stop",
-		successReply = {"Okay I'll be quiet now.", "I'm shutting up now.", "KK, TTYL", "Alright then, goodbye."},
-		failReply = {"But I'm not talking.", "I've already shut up.", "You already told me that."},
+		successReply = {"Okay I'll be quiet now.", "I'm shutting up now.", "KK, TTYL", "Alright then, goodbye.", "Baiiiiiiii", "See ya later.", "cya", "C U L8R", "OK, but don't forget to start me again."},
+		failReply = {"But I'm not talking.", "I've already shut up.", "You already told me that.", "You really don't like me?", "Sorry", "0_o ... I have."},
 		help = "'Stop' - Makes me stop replying to messages, commands will still work."
 	},
 	{
@@ -96,6 +110,7 @@ while true do
 		if string.lower(m) == commands[i].name then
 			commandFuncs[i].func(i, os.time())
 			cmdRan = true
+			os.sleep(1)
 			break
 		end
 	end
