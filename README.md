@@ -19,3 +19,4 @@ Jennifer is actually an acronym (because I needed a reason to use the name) whic
 - Develop a custom speech system
 - Allow Emotions
 - Keep remote override an option
+- Invade America
