@@ -30,8 +30,9 @@ chat.setDistance(chatDist)
 function speak(txt, t, d)
 	if t == lastMsg then
 		if debug or not d then
-			print("DEBUG: REPEAT MESSAGE DETECTED")
+			chat.say("DEBUG: REPEAT MESSAGE DETECTED")
 		end
+		print("DEBUG: REPEAT MESSAGE DETECTED")
 	else
 		if debug or not d then
 			chat.say(txt)
